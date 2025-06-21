@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MasterBikes - Pago y Boleta</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<!-- Session management script -->
+<script src="../js/session.js"></script>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f7f9fc;
+    margin: 0; padding: 0;
+  }
+  .custom-navbar {
+    background-color: #0066cc !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .custom-navbar .navbar-brand {
+    color: white !important;
+    font-weight: bold;
+  }
+  .custom-navbar .nav-link {
+    color: white !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  .custom-navbar .nav-link:hover {
+    color: #e0e0e0 !important;
+  }
+  .custom-navbar .btn-outline-primary {
+    color: white !important;
+    border-color: white !important;
+  }
+  .custom-navbar .btn-outline-primary:hover {
+    background-color: #004c99 !important;
+    color: white !important;
+  }
+  #checkoutSection, #successSection, #receiptSection {
+    max-width: 480px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
+  }
+  #successSection, #receiptSection {
+    display: none;
+  }
+  .d-flex { display: flex; justify-content: space-between; }
+  .border-bottom { border-bottom: 1px solid #ddd; margin-bottom: 8px; padding-bottom: 8px;}
+  button {
+    background: #0066cc;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  button:hover { background: #004a99; }
+</style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../images/icon-master.png" alt="MasterBikes" height="30" class="d-inline-block align-text-top me-2">
+                MasterBikes
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="arriendo.html">Arriendos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="catalogo.html">Catálogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="personalizacion.html">Personalización</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Bicicletas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="orion.html">Orion</a></li>
+                            <li><a class="dropdown-item" href="merak1.html">Merak 1</a></li>
+                            <li><a class="dropdown-item" href="polux7.html">Polux 7</a></li>
+                            <li><a class="dropdown-item" href="Aura6.html">Aura 6</a></li>
+                            <li><a class="dropdown-item" href="halley.html">Halley</a></li>
+                            <li><a class="dropdown-item" href="luna20.html">Luna 20</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="pago.html">Pago</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="formulario.html">Contacto</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <!-- Login/Register buttons -->
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <i class="bi bi-person"></i> Iniciar Sesión
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroModal">
+                            <i class="bi bi-person-plus"></i> Registrarse
+                        </button>
+                    </li>
+                    <!-- User menu (hidden by default) -->
+                    <li class="nav-item dropdown" id="userMenu" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span class="user-name">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Perfil</a></li>
+                            <li><a class="dropdown-item" href="arriendo.html"><i class="bi bi-bicycle"></i> Mis Arriendos</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal de Iniciar Sesión -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Registro -->
+    <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registroModalLabel">Registrarse</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="registerName" class="form-label">Nombre y apellidos</label>
+                            <input type="text" class="form-control" id="registerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPhone" class="form-label">Número de teléfono</label>
+                            <input type="tel" class="form-control" id="registerPhone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerAddress" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="registerAddress">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerBirthdate" class="form-label">Fecha de nacimiento</label>
+                            <input type="date" class="form-control" id="registerBirthdate">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="checkoutSection">
+  <h2>Pagar compra</h2>
+  <form id="paymentForm" novalidate>
+    <label>Nombre completo:<br />
+      <input type="text" name="nombre" required />
+    </label><br /><br />
+    <label>Correo electrónico:<br />
+      <input type="email" name="correo" required />
+    </label><br /><br />
+    <!-- Aquí podrías poner datos de tarjeta, dirección, etc. -->
+    <button type="submit">Pagar</button>
+  </form>
+</div>
+
+<div id="successSection">
+  <h2>¡Pago realizado con éxito!</h2>
+  <p>Gracias por tu compra. Aquí está tu boleta:</p>
+</div>
+
+<div id="receiptSection">
+  <h3>Boleta MasterBikes</h3>
+  <div id="receiptContent"></div>
+  <hr />
+  <div class="d-flex">
+    <strong>Total:</strong>
+    <span id="receiptTotal">$0</span>
+  </div>
+  <br />
+  <button onclick="printReceipt()">Imprimir Boleta</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  emailjs.init('dF-ZSyQCC3Jx91Pzh');
+
+  // Simula el carrito (reemplaza con tu localStorage o datos reales)
+  // Ejemplo con 2 productos
+  const cart = JSON.parse(localStorage.getItem('cart') || JSON.stringify([
+    { name: "Bicicleta MTB", price: 350000, quantity: 1 },
+    { name: "Casco Protector", price: 45000, quantity: 2 }
+  ]));
+
+  function formatPrice(price) {
+    return new Intl.NumberFormat('es-CL', {style:'currency',currency:'CLP'}).format(price);
+  }
+
+  const paymentForm = document.getElementById('paymentForm');
+  const checkoutSection = document.getElementById('checkoutSection');
+  const successSection = document.getElementById('successSection');
+  const receiptSection = document.getElementById('receiptSection');
+  const receiptContent = document.getElementById('receiptContent');
+  const receiptTotal = document.getElementById('receiptTotal');
+
+  function generateReceipt() {
+    let total = 0;
+    receiptContent.innerHTML = '';
+    cart.forEach(item => {
+      const itemTotal = item.price * item.quantity;
+      total += itemTotal;
+      receiptContent.innerHTML += `
+        <div class="d-flex border-bottom">
+          <div>${item.name} x${item.quantity}</div>
+          <div>${formatPrice(itemTotal)}</div>
+        </div>`;
+    });
+    receiptTotal.textContent = formatPrice(total);
+  }
+
+  function printReceipt() {
+    const printContents = receiptSection.innerHTML;
+    const originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    location.reload(); // recarga para restaurar el DOM
+  }
+
+  paymentForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!paymentForm.checkValidity()) {
+      paymentForm.classList.add('was-validated');
+      return;
+    }
+    // Aquí envías el email usando EmailJS si quieres...
+    const formData = new FormData(paymentForm);
+    const nombre = formData.get('nombre');
+    const correo = formData.get('correo');
+
+    // Generar mensaje para emailJS
+    const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    const itemsHtml = cart.map(i => `<li>${i.quantity} x ${i.name} — ${formatPrice(i.price * i.quantity)}</li>`).join('');
+    const message = `
+      <p>Gracias por tu compra en <strong>MasterBikes</strong>.</p>
+      <p><strong>Detalle del pedido:</strong></p>
+      <ul>${itemsHtml}</ul>
+      <p><strong>Total: ${formatPrice(total)}</strong></p>
+    `;
+
+    emailjs.send('service_90bp5de', 'template_y90jv2d', {
+      to_name: nombre,
+      to_email: correo,
+      message: message
+    }).then(() => {
+      console.log('Correo enviado');
+    }).catch(err => {
+      console.error('Error al enviar correo:', err);
+    });
+
+    // Mostrar secciones
+    checkoutSection.style.display = 'none';
+    successSection.style.display = 'block';
+    receiptSection.style.display = 'block';
+
+    // Vaciar carrito localStorage
+    localStorage.removeItem('cart');
+
+    generateReceipt();
+  });
+
+  // ===================== SISTEMA DE SESIÓN =====================
+  
+  // Validar formulario de login
+  document.querySelector('#loginModal form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      if (!email || !password) {
+          alert('Por favor, completa todos los campos requeridos.');
+          return false;
+      }
+      
+      // Simular login exitoso
+      const userData = {
+          name: email.split('@')[0],
+          email: email,
+          loginTime: new Date().toISOString()
+      };
+      
+      // Usar el session manager para manejar el login
+      sessionManager.handleLogin(userData);
+      
+      alert('Inicio de sesión exitoso. ¡Bienvenido!');
+      bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+  });
+
+  // Validar formulario de registro
+  document.querySelector('#registroModal form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      
+      if (!name || !email || !password) {
+          alert('Por favor, completa todos los campos requeridos.');
+          return false;
+      }
+      
+      // Simular registro exitoso
+      const userData = {
+          name: name,
+          email: email,
+          phone: document.getElementById('registerPhone').value,
+          address: document.getElementById('registerAddress').value,
+          birthdate: document.getElementById('registerBirthdate').value,
+          registerTime: new Date().toISOString()
+      };
+      
+      // Usar el session manager para manejar el registro
+      sessionManager.handleLogin(userData);
+      
+      alert('Registro exitoso. ¡Bienvenido a MasterBikes!');
+      bootstrap.Modal.getInstance(document.getElementById('registroModal')).hide();
+  });
+</script>
+
+</body>
+</html>
