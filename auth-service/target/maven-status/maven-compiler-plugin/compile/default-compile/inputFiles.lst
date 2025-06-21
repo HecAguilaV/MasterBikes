@@ -1,0 +1,15 @@
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/AuthServiceApplication.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/Main.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/config/CorsConfig.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/config/SecurityConfig.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/controller/AuthController.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/controller/GlobalExceptionHandler.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/controller/UsuarioController.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/dto/LoginRequest.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/dto/LoginResponse.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/dto/RegistroRequest.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/model/Usuario.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/model/enums/Rol.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/repository/UsuarioRepository.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/service/UsuarioService.java
+/Users/hector/Repositorios/Github/masterbikes/auth-service/src/main/java/masterbikes/util/JwtUtil.java
