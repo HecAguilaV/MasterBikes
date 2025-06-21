@@ -1,15 +1,3 @@
-masterbikes/dto/LoginResponse.class
-masterbikes/dto/RegistroRequest.class
-masterbikes/controller/AuthController.class
-masterbikes/dto/LoginRequest.class
-masterbikes/controller/GlobalExceptionHandler.class
-masterbikes/service/UsuarioService.class
-masterbikes/model/Usuario$UsuarioBuilder.class
-masterbikes/controller/UsuarioController.class
-masterbikes/model/enums/Rol.class
-masterbikes/repository/UsuarioRepository.class
-masterbikes/config/CorsConfig.class
-masterbikes/model/Usuario.class
-masterbikes/util/JwtUtil.class
 masterbikes/config/SecurityConfig.class
+masterbikes/config/CorsConfig.class
 masterbikes/AuthServiceApplication.class
