@@ -8,6 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import masterbikes.model.enums.Rol;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "usuarios")
@@ -15,7 +21,7 @@ import masterbikes.model.enums.Rol;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Usuario {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,4 +53,38 @@ public class Usuario {
 
     @Column(nullable = true)
     private String fechaNacimiento; // Fecha de nacimiento
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Es importante prefijar con "ROLE_" si se usan expresiones de rol como hasRole('ADMIN')
+        // o si se usa @PreAuthorize("hasRole('ADMIN')")
+        // Si solo se usa .requestMatchers(HttpMethod.GET, "/ruta").hasAuthority("ADMIN"), no es necesario.
+        // Por consistencia y flexibilidad, es buena práctica añadir "ROLE_".
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + rol.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email; // Usamos email como username
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Por defecto, no expira
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Por defecto, no bloqueada
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Por defecto, credenciales no expiran
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return activo; // Usa el campo 'activo' de la entidad
+    }
 }
