@@ -1,0 +1,25 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.compile.nullAnalysis.nonnullByDefault": false,
+  "java.errors.incompleteClasspath.severity": "warning",
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "path": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
+      "default": true
+    }
+  ],
+  "java.import.gradle.java.home": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
+  "java.import.maven.enabled": true,
+  "java.import.gradle.enabled": true,
+  "java.import.gradle.wrapper.enabled": true,
+  "java.import.gradle.version": "7.4",
+  "java.import.gradle.offline.enabled": false,
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar"
+  ],
+  "java.jdt.ls.java.home": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
+  "java.jdt.ls.vmargs": "-javaagent:${workspaceFolder}/lib/lombok.jar",
+  "java.compile.processAnnotations": true
+}
