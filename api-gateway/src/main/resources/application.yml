@@ -1,35 +1,31 @@
-# Configuraci�n del servidor del Gateway
+# Configuración del servidor del Gateway
 server:
-port: 9000 # El puerto donde escuchar� el Gateway
+  port: 9000 # El puerto donde escuchará el Gateway
 
-# Configuraci�n de Spring Cloud Gateway
+# Configuración de Spring Cloud Gateway
 spring:
-application:
-name: api-gateway # Nombre de nuestra aplicaci�n Gateway
-cloud:
-gateway:
-# Definici�n de las rutaskjhjh
-routes:
-# Esta es una ruta para tu servicio de autenticaci�n/usuarios
-- id: auth_service_route
-# La direcci�n de tu backend actual
-uri: http://localhost:8081
-# Predicados: las condiciones para que esta ruta se active
-predicates:
-# Si la petici�n empieza con /api/ o /auth/, se redirigir� al backend
-- Path=/api/**, /auth/**
-
-# --- CONFIGURACI�N DE CORS GLOBAL ---
-# Esto reemplaza la necesidad del CorsConfig en el backend
-globalcors:
-cors-configurations:
-'[/**]': # Aplica a todas las rutas del gateway
-allowed-origins: "http://localhost:63342" # �Permite tu frontend!
-allowed-methods:
-- GET
-- POST
-- PUT
-- DELETE
-- OPTIONS
-allowed-headers: "*"
-allow-credentials: true
+  application:
+    name: api-gateway # Nombre de nuestra aplicación Gateway
+  cloud:
+    gateway:
+      # Definición de las rutas
+      routes:
+        - id: auth_service_route
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/**, /auth/**
+      # --- CONFIGURACIÓN DE CORS GLOBAL ---
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:63342"
+              - "http://localhost:9000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
