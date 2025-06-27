@@ -787,20 +787,7 @@
 
     <!-- reCAPTCHA validation script -->
     <script>
-        let loginCaptchaWidgetId, registerCaptchaWidgetId;
-        window.onload = function() {
-            const captchaDivs = document.querySelectorAll('.g-recaptcha');
-            if (captchaDivs.length > 0) {
-                loginCaptchaWidgetId = grecaptcha.render(captchaDivs[0], {
-                    sitekey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-                });
-            }
-            if (captchaDivs.length > 1) {
-                registerCaptchaWidgetId = grecaptcha.render(captchaDivs[1], {
-                    sitekey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-                });
-            }
-        };
+        // Eliminar renderizado manual, usar índices de widget
     </script>
     <script>
         // Validar formulario de login
@@ -814,29 +801,27 @@
                 alert('Por favor, completa todos los campos requeridos.');
                 return false;
             }
-            
-            // Validar reCAPTCHA
-            const response = grecaptcha.getResponse(loginCaptchaWidgetId);
+            // Validar reCAPTCHA usando índice 0
+            const response = grecaptcha.getResponse(0);
             if (response.length === 0) {
                 alert('Por favor, completa la verificación de robot antes de continuar.');
                 return false;
             }
-            
             // Login real contra backend
             try {
                 const authData = await API.login(email, password); // { token, user, roles }
                 sessionManager.handleLogin(authData);
                 alert('Inicio de sesión exitoso. ¡Bienvenido!');
-                grecaptcha.reset(loginCaptchaWidgetId);
+                grecaptcha.reset(0);
                 bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
             } catch (err) {
                 alert('Error de autenticación: ' + err.message);
-                grecaptcha.reset(loginCaptchaWidgetId);
+                grecaptcha.reset(0);
             }
         });
 
         // Validar formulario de registro
-        document.querySelector('#registroModal form').addEventListener('submit', function(e) {
+        document.querySelector('#registroModal form').addEventListener('submit', async function(e) {
             e.preventDefault();
             // Validación básica del formulario
             const name = document.getElementById('registerName').value;
@@ -855,22 +840,26 @@
                 return false;
             }
             
-            // Simular registro exitoso (aquí conectarías con tu backend)
-            const userData = {
-                name: name,
-                email: email,
-                phone: document.getElementById('registerPhone').value,
-                address: document.getElementById('registerAddress').value,
-                birthdate: document.getElementById('registerBirthdate').value,
-                registerTime: new Date().toISOString()
-            };
-            
-            // Usar el session manager para manejar el registro
-            sessionManager.handleLogin(userData);
-            
-            alert('Registro exitoso. ¡Bienvenido a MasterBikes!');
-            grecaptcha.reset();
-            bootstrap.Modal.getInstance(document.getElementById('registroModal')).hide();
+            // Registro real contra backend
+            try {
+                const userData = {
+                    name: name,
+                    email: email,
+                    password: password,
+                    phone: document.getElementById('registerPhone').value,
+                    address: document.getElementById('registerAddress').value,
+                    birthdate: document.getElementById('registerBirthdate').value,
+                    recaptcha: response
+                };
+                const authData = await API.register(userData); // { token, user, roles }
+                sessionManager.handleLogin(authData);
+                alert('Registro exitoso. ¡Bienvenido a MasterBikes!');
+                grecaptcha.reset(registerCaptchaWidgetId);
+                bootstrap.Modal.getInstance(document.getElementById('registroModal')).hide();
+            } catch (err) {
+                alert('Error en el registro: ' + err.message);
+                grecaptcha.reset(registerCaptchaWidgetId);
+            }
         });
     </script>
 
