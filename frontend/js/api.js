@@ -4,28 +4,28 @@
 const API_BASE_URL = "http://localhost:9000"; // Puerto 9000 según application.yml
 
 const API = {
-    // Obtener productos del catálogo
+    // Obtener productos del catálogo (pública)
     async getProductos() {
         const response = await fetch(`${API_BASE_URL}/catalogo/productos`);
         if (!response.ok) throw new Error("Error al obtener productos");
         return response.json();
     },
 
-    // Obtener stock de una bicicleta por ID
+    // Obtener stock de una bicicleta por ID (pública)
     async getStockBicicleta(idBicicleta) {
         const response = await fetch(`${API_BASE_URL}/inventario/stock/${idBicicleta}`);
         if (!response.ok) throw new Error("Error al obtener stock");
         return response.json();
     },
 
-    // Obtener sucursales
+    // Obtener sucursales (pública)
     async getSucursales() {
         const response = await fetch(`${API_BASE_URL}/sucursal/sucursales`);
         if (!response.ok) throw new Error("Error al obtener sucursales");
         return response.json();
     },
 
-    // Login de usuario
+    // Login de usuario (devuelve token y roles)
     async login(email, password) {
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: "POST",
@@ -33,7 +33,7 @@ const API = {
             body: JSON.stringify({ email, password })
         });
         if (!response.ok) throw new Error("Credenciales inválidas");
-        return response.json();
+        return response.json(); // Se espera { token, user, roles }
     },
 
     // Registro de usuario
@@ -47,7 +47,21 @@ const API = {
         return response.json();
     },
 
-    // Puedes agregar más métodos según tus endpoints...
+    // Método genérico para peticiones autenticadas
+    async fetchWithAuth(url, options = {}) {
+        const token = sessionManager.getToken && sessionManager.getToken();
+        const headers = options.headers || {};
+        if (token) headers["Authorization"] = `Bearer ${token}`;
+        const response = await fetch(url, { ...options, headers });
+        return response;
+    },
+
+    // Ejemplo de endpoint protegido:
+    // async getPerfilUsuario() {
+    //     const response = await this.fetchWithAuth(`${API_BASE_URL}/auth/me`);
+    //     if (!response.ok) throw new Error("No autorizado");
+    //     return response.json();
+    // },
 };
 
 // Hacer disponible el objeto API globalmente

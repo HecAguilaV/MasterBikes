@@ -788,7 +788,7 @@
     <!-- reCAPTCHA validation script -->
     <script>
         // Validar formulario de login
-        document.querySelector('#loginModal form').addEventListener('submit', function(e) {
+        document.querySelector('#loginModal form').addEventListener('submit', async function(e) {
             e.preventDefault();
             // Validación básica del formulario
             const email = document.getElementById('loginEmail').value;
@@ -806,19 +806,17 @@
                 return false;
             }
             
-            // Simular login exitoso (aquí conectarías con tu backend)
-            const userData = {
-                name: email.split('@')[0], // Usar parte del email como nombre
-                email: email,
-                loginTime: new Date().toISOString()
-            };
-            
-            // Usar el session manager para manejar el login
-            sessionManager.handleLogin(userData);
-            
-            alert('Inicio de sesión exitoso. ¡Bienvenido!');
-            grecaptcha.reset();
-            bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+            // Login real contra backend
+            try {
+                const authData = await API.login(email, password); // { token, user, roles }
+                sessionManager.handleLogin(authData);
+                alert('Inicio de sesión exitoso. ¡Bienvenido!');
+                grecaptcha.reset();
+                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+            } catch (err) {
+                alert('Error de autenticación: ' + err.message);
+                grecaptcha.reset();
+            }
         });
 
         // Validar formulario de registro
