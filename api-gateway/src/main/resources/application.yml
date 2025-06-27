@@ -33,3 +33,7 @@ spring:
               - OPTIONS
             allowedHeaders: "*"
             allowCredentials: true
+
+eureka:
+  client:
+    enabled: false
