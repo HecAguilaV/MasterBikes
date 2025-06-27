@@ -787,6 +787,22 @@
 
     <!-- reCAPTCHA validation script -->
     <script>
+        let loginCaptchaWidgetId, registerCaptchaWidgetId;
+        window.onload = function() {
+            const captchaDivs = document.querySelectorAll('.g-recaptcha');
+            if (captchaDivs.length > 0) {
+                loginCaptchaWidgetId = grecaptcha.render(captchaDivs[0], {
+                    sitekey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+                });
+            }
+            if (captchaDivs.length > 1) {
+                registerCaptchaWidgetId = grecaptcha.render(captchaDivs[1], {
+                    sitekey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+                });
+            }
+        };
+    </script>
+    <script>
         // Validar formulario de login
         document.querySelector('#loginModal form').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -800,7 +816,7 @@
             }
             
             // Validar reCAPTCHA
-            const response = grecaptcha.getResponse();
+            const response = grecaptcha.getResponse(loginCaptchaWidgetId);
             if (response.length === 0) {
                 alert('Por favor, completa la verificación de robot antes de continuar.');
                 return false;
@@ -811,11 +827,11 @@
                 const authData = await API.login(email, password); // { token, user, roles }
                 sessionManager.handleLogin(authData);
                 alert('Inicio de sesión exitoso. ¡Bienvenido!');
-                grecaptcha.reset();
+                grecaptcha.reset(loginCaptchaWidgetId);
                 bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
             } catch (err) {
                 alert('Error de autenticación: ' + err.message);
-                grecaptcha.reset();
+                grecaptcha.reset(loginCaptchaWidgetId);
             }
         });
 
@@ -833,7 +849,7 @@
             }
             
             // Validar reCAPTCHA
-            const response = grecaptcha.getResponse();
+            const response = grecaptcha.getResponse(registerCaptchaWidgetId);
             if (response.length === 0) {
                 alert('Por favor, completa la verificación de robot antes de continuar.');
                 return false;
