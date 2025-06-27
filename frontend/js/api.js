@@ -38,7 +38,7 @@ const API = {
 
     // Registro de usuario
     async register(userData) {
-        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        const response = await fetch(`${API_BASE_URL}/api/usuarios/registro`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData)
