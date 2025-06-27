@@ -53,4 +53,8 @@ public class UsuarioService {
             return true;
         }).orElse(false);
     }
+
+    public boolean existeEmail(String email) {
+        return usuarioRepository.existsByEmail(email);
+    }
 }

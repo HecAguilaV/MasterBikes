@@ -830,7 +830,6 @@
             const name = document.getElementById('registerName').value;
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
-            
             if (!name || !email || !password) {
                 alert('Por favor, completa todos los campos requeridos.');
                 return false;
@@ -844,12 +843,12 @@
             // Registro real contra backend
             try {
                 const userData = {
-                    name: name,
+                    nombre: name,
                     email: email,
                     password: password,
-                    phone: document.getElementById('registerPhone').value,
-                    address: document.getElementById('registerAddress').value,
-                    birthdate: document.getElementById('registerBirthdate').value,
+                    telefono: document.getElementById('registerPhone').value,
+                    direccion: document.getElementById('registerAddress').value,
+                    fechaNacimiento: document.getElementById('registerBirthdate').value,
                     recaptcha: response
                 };
                 const authData = await API.register(userData); // { token, user, roles }

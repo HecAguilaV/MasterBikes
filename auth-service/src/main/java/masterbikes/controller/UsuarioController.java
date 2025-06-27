@@ -56,6 +56,10 @@ public class UsuarioController {
 
     @PostMapping("/registro")
     public ResponseEntity<?> registrarUsuario(@RequestBody RegistroRequest request) {
+        if (usuarioService.existeEmail(request.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("error", "El email ya está registrado."));
+        }
         Usuario usuario = Usuario.builder()
                 .nombre(request.getNombre())
                 .email(request.getEmail())
