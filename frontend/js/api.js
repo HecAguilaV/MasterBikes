@@ -32,7 +32,14 @@ const API = {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
         });
-        if (!response.ok) throw new Error("Credenciales inválidas");
+        if (!response.ok) {
+            let errorMsg = "Credenciales inválidas";
+            try {
+                const error = await response.json();
+                if (error && error.message) errorMsg = error.message;
+            } catch (e) {}
+            throw new Error(errorMsg);
+        }
         return response.json(); // Se espera { token, user, roles }
     },
 
@@ -43,7 +50,14 @@ const API = {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData)
         });
-        if (!response.ok) throw new Error("Error al registrar usuario");
+        if (!response.ok) {
+            let errorMsg = "Error al registrar usuario";
+            try {
+                const error = await response.json();
+                if (error && error.message) errorMsg = error.message;
+            } catch (e) {}
+            throw new Error(errorMsg);
+        }
         return response.json();
     },
 
