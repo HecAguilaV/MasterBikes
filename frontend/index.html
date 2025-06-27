@@ -787,7 +787,9 @@
 
     <!-- reCAPTCHA validation script -->
     <script>
-        // Eliminar renderizado manual, usar índices de widget
+        // Usar índices de widget en vez de variables no definidas
+        // Eliminar variables loginCaptchaWidgetId y registerCaptchaWidgetId
+        // No es necesario renderizar manualmente, Google lo hace automáticamente
     </script>
     <script>
         // Validar formulario de login
@@ -832,14 +834,12 @@
                 alert('Por favor, completa todos los campos requeridos.');
                 return false;
             }
-            
-            // Validar reCAPTCHA
-            const response = grecaptcha.getResponse(registerCaptchaWidgetId);
+            // Validar reCAPTCHA usando índice 1
+            const response = grecaptcha.getResponse(1);
             if (response.length === 0) {
                 alert('Por favor, completa la verificación de robot antes de continuar.');
                 return false;
             }
-            
             // Registro real contra backend
             try {
                 const userData = {
@@ -854,11 +854,11 @@
                 const authData = await API.register(userData); // { token, user, roles }
                 sessionManager.handleLogin(authData);
                 alert('Registro exitoso. ¡Bienvenido a MasterBikes!');
-                grecaptcha.reset(registerCaptchaWidgetId);
+                grecaptcha.reset(1);
                 bootstrap.Modal.getInstance(document.getElementById('registroModal')).hide();
             } catch (err) {
                 alert('Error en el registro: ' + err.message);
-                grecaptcha.reset(registerCaptchaWidgetId);
+                grecaptcha.reset(1);
             }
         });
     </script>
