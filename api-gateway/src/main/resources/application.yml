@@ -30,9 +30,16 @@ spring:
               - PUT
               - DELETE
               - OPTIONS
-            allowedHeaders: "*"
-            allowCredentials: true
 
+            allowedHeaders: "*" # Permite todos los encabezados en las solicitudes CORS
+            allowCredentials: true # Permite el envío de cookies y credenciales en solicitudes CORS
+
+# ---------------------------------------------
+# Eureka es un servidor de descubrimiento de servicios de Spring Cloud Netflix.
+# Permite que los microservicios se registren y descubran entre sí dinámicamente,
+# eliminando la necesidad de usar URLs fijas. Cuando 'enabled' está en 'false',
+# este microservicio (el gateway) no se registra ni consulta servicios en Eureka.
+# ---------------------------------------------
 eureka:
   client:
-    enabled: false
+    enabled: false # Desactiva el registro automático en Eureka (descubrimiento de servicios)
