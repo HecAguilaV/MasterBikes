@@ -1,4 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {    // Referencias a elementos del DOM
+
+// --- MVP: Carga dinámica de productos desde el backend ---
+document.addEventListener('DOMContentLoaded', async function() {
+    // Referencias a elementos del DOM
     const productContainer = document.getElementById('productContainer');
     const resultsCount = document.getElementById('resultsCount');
     const priceRange = document.getElementById('priceRange');
@@ -11,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {    // Referencias a e
     const clearFilters = document.getElementById('clearFilters');
     const gridView = document.getElementById('gridView');
     const listView = document.getElementById('listView');
-    
+
     // Estado de los filtros
     let filters = {
         type: 'Todas las bicicletas',
@@ -20,104 +23,27 @@ document.addEventListener('DOMContentLoaded', function() {    // Referencias a e
         brand: 'Todas las marcas',
         minRating: 0
     };
-    
+
     // Estado de la vista
     let viewMode = 'grid';
     let currentSort = 'featured';
-    
-    // Datos de bicicletas (si no existe window.bikeData)
-    if (!window.bikeData) {
-        window.bikeData = [
-            {
-                id: 1,
-                name: "Bicicleta Montaña Aura 6",
-                brand: "Oxford",
-                type: "Montaña",
-                size: "M",
-                price: 599990,
-                oldPrice: 699990,
-                rating: 4.5,
-                image: "../images/aura6.jpg",
-                discount: 15,
-                description: "Bicicleta de montaña con cuadro de aluminio, suspensión delantera y frenos de disco hidráulicos.",
-                detailPage: "Aura6.html"
-            },
-            {
-                id: 2,
-                name: "Bicicleta Ruta Merak 1",
-                brand: "Oxford",
-                type: "Ruta",
-                size: "L",
-                price: 899990,
-                oldPrice: null,
-                rating: 5,
-                image: "../images/merak1.jpg",
-                discount: 0,
-                description: "Bicicleta de ruta con cuadro de carbono, grupo Shimano 105 y ruedas aerodinámicas.",
-                detailPage: "merak1.html"
-            },
-            {
-                id: 3,
-                name: "Bicicleta Urbana Luna 20",
-                brand: "Trek",
-                type: "Urbana",
-                size: "S",
-                price: 349990,
-                oldPrice: 399990,
-                rating: 4,
-                image: "../images/luna20.jpg",
-                discount: 12,
-                description: "Bicicleta urbana con cuadro de aluminio, cambios Shimano y posición cómoda para ciudad.",
-                detailPage: "luna20.html"
-            },
-            {
-                id: 4,
-                name: "Bicicleta Eléctrica Polux 7",
-                brand: "Specialized",
-                type: "Eléctrica",
-                size: "M",
-                price: 1899990,
-                oldPrice: 2199990,
-                rating: 4.8,
-                image: "../images/polux7.jpg",
-                discount: 14,
-                description: "Bicicleta eléctrica con motor central Bosch, batería de alta capacidad y autonomía de 80km.",
-                detailPage: "polux7.html"
-            },
-            {
-                id: 5,
-                name: "Bicicleta MTB Halley",
-                brand: "Giant",
-                type: "Montaña",
-                size: "L",
-                price: 799990,
-                oldPrice: null,
-                rating: 4.2,
-                image: "../images/halley.jpg",
-                discount: 0,
-                description: "Bicicleta de montaña con cuadro de aluminio reforzado, suspensión RockShox y frenos Shimano.",
-                detailPage: "halley.html"
-            },
-            {
-                id: 6,
-                name: "Bicicleta Gravel Orion",
-                brand: "Bianchi",
-                type: "Gravel",
-                size: "XL",
-                price: 1299990,
-                oldPrice: 1499990,
-                rating: 4.7,
-                image: "../images/orion.jpg",
-                discount: 13,
-                description: "Bicicleta gravel con cuadro de carbono, horquilla de carbono y grupo SRAM Rival.",
-                detailPage: "orion.html"
-            }
-        ];
+
+    // Cargar productos dinámicamente desde el backend
+    try {
+        const res = await fetch('/api/v1/catalogo/bicicletas');
+        if (res.ok) {
+            const data = await res.json();
+            window.bikeData = data;
+        } else {
+            window.bikeData = [];
+        }
+    } catch (e) {
+        window.bikeData = [];
     }
-    
+
     // Inicializar la funcionalidad del catálogo
     initCatalog();
-    
+
     // Asegurarse de que el carrito esté inicializado
     if (typeof updateCartUI === 'function') {
         updateCartUI();
@@ -127,15 +53,45 @@ document.addEventListener('DOMContentLoaded', function() {    // Referencias a e
 /**
  * Inicializa la funcionalidad del catálogo
  */
+
 function initCatalog() {
+    // Llenar dinámicamente los filtros según los productos reales
+    fillDynamicFilters();
+
     // Configurar los botones de agregar al carrito
     setupAddToCartButtons();
-    
+
     // Configurar los filtros y ordenamiento
     setupFilters();
-    
+
     // Inicializar información de stock
     initializeStockInfo();
+}
+
+// Llena los filtros de tipo, talla y marca según los productos disponibles
+function fillDynamicFilters() {
+    if (!window.bikeData) return;
+
+    // Tipos
+    const types = Array.from(new Set(window.bikeData.map(p => p.type))).filter(Boolean);
+    if (typeFilter) {
+        typeFilter.innerHTML = '<option>Todas las bicicletas</option>' +
+            types.map(t => `<option value="${t}">${t}</option>`).join('');
+    }
+
+    // Tallas
+    const sizes = Array.from(new Set(window.bikeData.map(p => p.size))).filter(Boolean);
+    if (sizeFilter) {
+        sizeFilter.innerHTML = '<option>Todas las tallas</option>' +
+            sizes.map(s => `<option value="${s}">${s}</option>`).join('');
+    }
+
+    // Marcas
+    const brands = Array.from(new Set(window.bikeData.map(p => p.brand))).filter(Boolean);
+    if (brandFilter) {
+        brandFilter.innerHTML = '<option>Todas las marcas</option>' +
+            brands.map(b => `<option value="${b}">${b}</option>`).join('');
+    }
 }
 
 /**
@@ -521,10 +477,10 @@ function sortProducts(products, sortBy) {
 // Función para renderizar productos
 function renderProducts(products) {
     if (!productContainer) return;
-    
+
     // Limpiar contenedor
     productContainer.innerHTML = '';
-    
+
     // Verificar si hay productos
     if (products.length === 0) {
         productContainer.innerHTML = `
@@ -536,7 +492,7 @@ function renderProducts(products) {
         `;
         return;
     }
-    
+
     // Renderizar productos
     products.forEach(product => {
         const productElement = document.createElement('div');
@@ -554,11 +510,95 @@ function renderProducts(products) {
                     <p class="card-text"><strong>Stock:</strong> ${product.stock || 0}</p>
                     <button class="btn btn-primary add-to-cart-btn" data-product-id="${product.id}"><i class="bi bi-cart-plus"></i> Agregar al carrito</button>
                     <a href="${product.detailPage}" class="btn btn-secondary mt-2">Ver detalles</a>
+                    <button class="btn btn-danger mt-2 delete-product-btn" data-product-id="${product.id}"><i class="bi bi-trash"></i> Eliminar</button>
                 </div>
             </div>
         `;
         productContainer.appendChild(productElement);
     });
+
+    // Botón para agregar producto (demo, visible siempre)
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn btn-success mb-3';
+    addBtn.innerHTML = '<i class="bi bi-plus-circle"></i> Agregar producto demo';
+    addBtn.onclick = showAddProductForm;
+    productContainer.prepend(addBtn);
+
+    // Delegación para eliminar producto
+    document.querySelectorAll('.delete-product-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.getAttribute('data-product-id');
+            deleteProduct(id);
+        });
+    });
+}
+
+// Muestra un formulario simple para agregar producto demo
+function showAddProductForm() {
+    const formHtml = `
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Agregar producto demo</h5>
+                <input type="text" id="newName" class="form-control mb-2" placeholder="Nombre">
+                <input type="text" id="newBrand" class="form-control mb-2" placeholder="Marca">
+                <input type="text" id="newType" class="form-control mb-2" placeholder="Tipo">
+                <input type="text" id="newSize" class="form-control mb-2" placeholder="Talla">
+                <input type="number" id="newPrice" class="form-control mb-2" placeholder="Precio">
+                <input type="text" id="newImage" class="form-control mb-2" placeholder="URL Imagen">
+                <textarea id="newDesc" class="form-control mb-2" placeholder="Descripción"></textarea>
+                <button class="btn btn-success" id="saveNewProduct">Guardar</button>
+                <button class="btn btn-secondary ms-2" id="cancelAddProduct">Cancelar</button>
+            </div>
+        </div>
+    `;
+    productContainer.insertAdjacentHTML('afterbegin', formHtml);
+    document.getElementById('saveNewProduct').onclick = saveNewProduct;
+    document.getElementById('cancelAddProduct').onclick = function() {
+        document.querySelector('.card.mb-3').remove();
+    };
+}
+
+// Envía el producto nuevo al backend (POST)
+async function saveNewProduct() {
+    const name = document.getElementById('newName').value;
+    const brand = document.getElementById('newBrand').value;
+    const type = document.getElementById('newType').value;
+    const size = document.getElementById('newSize').value;
+    const price = document.getElementById('newPrice').value;
+    const image = document.getElementById('newImage').value;
+    const description = document.getElementById('newDesc').value;
+    const product = { name, brand, type, size, price, image, description };
+    try {
+        const res = await fetch(`/api/v1/catalogo/${type}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product)
+        });
+        if (res.ok) {
+            alert('Producto agregado correctamente');
+            location.reload();
+        } else {
+            alert('Error al agregar producto');
+        }
+    } catch (e) {
+        alert('Error de red');
+    }
+}
+
+// Elimina producto del backend (DELETE)
+async function deleteProduct(id) {
+    if (!confirm('¿Seguro que deseas eliminar este producto?')) return;
+    try {
+        const res = await fetch(`/api/v1/catalogo/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            alert('Producto eliminado');
+            location.reload();
+        } else {
+            alert('Error al eliminar producto');
+        }
+    } catch (e) {
+        alert('Error de red');
+    }
 }
 
 // Función para formatear el precio
