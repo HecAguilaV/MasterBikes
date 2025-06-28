@@ -1,268 +1,109 @@
-# 🚴‍♂️ MasterBikes - Plataforma de Comercio Electrónico para Bicicletas
+# 🚴‍♂️ MasterBikes - MVP Microservicios
 
-MasterBikes es una aplicación web completa para la venta, arriendo y servicio técnico de bicicletas, desarrollada con arquitectura de microservicios.
+## Resumen General
+MasterBikes es una plataforma de e-commerce para bicicletas, accesorios y servicios, basada en microservicios. El objetivo MVP es permitir a un usuario cliente autenticarse, ver el catálogo real, agregar productos al carrito y realizar una compra registrada en el backend.
 
-## 📋 Tabla de Contenidos
-- [Arquitectura del Sistema](#arquitectura-del-sistema)
-- [Stack Tecnológico](#stack-tecnológico)
-- [Endpoints Principales](#endpoints-principales)
-- [Pruebas](#pruebas)
-- [Problemas de Comunicación](#problemas-de-comunicación)
-- [Diagramas](#diagramas)
-- [Configuración y Despliegue](#configuración-y-despliegue)
+---
 
-## 🏗️ Arquitectura del Sistema
+## 🏗️ Arquitectura General
 
-El proyecto está organizado en microservicios independientes:
-masterbikes/
-├── servicio de autenticación/
-├── catalogo-ser
-├── inventario-servicio/
-├── sucursal-servicio/ # 🏢 Microser
-├── venta-ser
-├── interfaz/
-└── ...
+```mermaid
+architecture-beta
+    group frontend(cloud)[Frontend Web]
+    group backend(cloud)[Backend Microservicios]
+    service auth(server)[Auth Service :8081] in backend
+    service catalog(server)[Catálogo :8082] in backend
+    service venta(server)[Venta :8085] in backend
+    service inventario(server)[Inventario :8084] in backend
+    service sucursal(server)[Sucursal :8083] in backend
+    service db(database)[MySQL] in backend
 
+    frontend:R --> L:auth
+    frontend:R --> L:catalog
+    frontend:R --> L:venta
+    catalog:B -- T:db
+    venta:B -- T:db
+    inventario:B -- T:db
+    sucursal:B -- T:db
+```
+
+---
 
 ## 🛠️ Stack Tecnológico
+- **Backend:** Java 17, Spring Boot 3.5+, Spring Data JPA, JWT, BCrypt, Maven, MySQL
+- **Frontend:** HTML5, CSS3, JavaScript ES6+, Bootstrap 5, EmailJS
+- **Infraestructura:** XAMPP (dev), Postman (pruebas), Localhost
 
-### Backend
-- **Lenguaje**: Java 17
-- **Framework**: Spring Boot 3.5+
-- **Gestión de dependencias**: Maven
-- **Seguridad**: JWT + BCrypt
-- **Documentación**: Swagger/OpenAPI
-- **Comunicación**: RestTemplate
-
-### Frontend
-- **Tecnologías**: HTML5, CSS3, JavaScript ES6+
-- **Framework CSS**: Bootstrap 5.3.3
-- **Iconografía**: FontAwesome 6.5.0
-- **Funcionalidades**: EmailJS, LocalStorage
-
-### Base de Datos
-- **Motor**: MySQL
-- **Herramienta recomendada**: XAMPP
-- **ORM**: Spring Data JPA
+---
 
 ## 🔗 Endpoints Principales
 
-### Auth Service (Puerto 8081)
-- `POST /auth/login` - Autenticación de usuario
-- `POST /api/usuarios/registro` - Registro público
-- `GET /api/usuarios` - Listar usuarios (con permisos)
-- `GET /api/usuarios/{id}` - Obtener usuario por ID
-- `PUT /api/usuarios/{id}` - Actualizar usuario
-- `DELETE /api/usuarios/{id}` - Desactivar usuario
+### Auth Service (8081)
+- `POST /auth/login` - Login de usuario `{ email, password }`
+- `POST /api/usuarios/registro` - Registro de usuario
 
-### Catalogo Service (Puerto 8082)
+### Catálogo Service (8082)
 - `GET /api/v1/catalogo/bicicletas` - Listar bicicletas
-- `GET /api/v1/catalogo/accesorios` - Listar accesorios
-- `GET /api/v1/catalogo/componentes` - Listar componentes
-- `POST /api/v1/catalogo/{tipo}` - Crear productos
+- `POST /api/v1/catalogo/bicicletas` - Crear bicicleta (requiere BicicletaDTO)
 
-### Inventario Service (Puerto 8084)
-- `GET /api/v1/inventarios` - Listar inventario
-- `POST /api/v1/movimientosinventario` - Registrar movimientos
-- `GET /api/v1/reportesucursal/{id}` - Reportes por sucursal
-
-### Sucursal Service (Puerto 8083)
-- `GET /api/v1/sucursales` - Listar sucursales
-- `GET /api/v1/empleados` - Listar empleados
-
-### Venta Service (Puerto 8085)
+### Venta Service (8085)
+- `POST /api/v1/ventas` - Registrar venta (requiere objeto Venta)
 - `GET /api/v1/ventas` - Listar ventas
-- `GET /api/v1/facturas` - Listar facturas
 
-## 🧪 Pruebas
+---
 
-### Estrategia de Testing
-- **Framework**: JUnit 5 + Mockito
-- **Cobertura**: Tests unitarios en auth-service
-- **Patrón**: `@SpringBootTest` para tests de integración
-- **Mocking**: Repositorios y servicios externos
+## � Problemas y Desafíos Actuales
+- **Desacople DTOs:** El backend espera BicicletaDTO (IDs de componentes), pero el frontend y scripts intentan poblar con productos simples (name, brand, etc.).
+- **Poblamiento:** No se puede poblar el catálogo con productos simples sin modificar el backend o conocer los IDs de componentes.
+- **Compra:** El frontend simula la compra (EmailJS) pero no realiza POST real a `/api/v1/ventas`.
+- **Autenticación:** El login funciona y guarda el token, pero el flujo de compra no lo utiliza para registrar ventas reales.
+- **Integración:** Falta integración real de carrito → compra → registro en backend.
+- **Documentación:** Falta documentación clara de los DTOs requeridos para poblar y comprar.
 
-### Ejecución de Pruebas
-```bash  
-mvn test                    # Ejecutar todas las pruebas  
-mvn test -Dtest=ClassName   # Ejecutar prueba específica  
-⚠️ Problemas de Comunicación Actuales
-Configuración CORS
-Todos los servicios t
-Pe
-Configurado en cada microservicio
-Comunicación Inter-Servicios
-RestTemplate : Comunicac
-URL codificadas : localhost con puertos específicos
-Manejo de errores : Básico, puede mejorarse
-Tiempo de espera : No configurado específicamente
-Problemas identificados
-URL codificadas en lugar de descubrimiento de servicios
-Falta de disyuntorespara resiliencia
-No hay equilibrio de carga entre instancias
-Registro distribuido no implementado
-📊 Diagramas
-Arquitectura de Microservicios
-Base de Datos
+---
 
-Microservicios Backend
+## 🚦 Recomendaciones para el MVP
+1. **Poblar catálogo:** Usar el formato BicicletaDTO o adaptar el backend para aceptar productos simples.
+2. **Login:** Usar `/auth/login` y guardar el token JWT.
+3. **Compra real:** Modificar el frontend para enviar el carrito como objeto Venta a `/api/v1/ventas` usando el token.
+4. **Verificación:** Usar Postman para poblar, loguear y comprar, asegurando que los endpoints funcionen de extremo a extremo.
+5. **Documentar DTOs:** Agregar ejemplos de JSON válidos para poblar y comprar en el README.
 
-Frontend
+---
 
-Frontend Web
-HTML, CSS, JS
+## 📦 Ejemplo de JSON para poblar Bicicleta (BicicletaDTO)
+```json
+{
+  "idCliente": "1",
+  "tallaUsuario": "M",
+  "idMarco": 1,
+  "idRueda": 2,
+  "idFreno": 3,
+  "idManubrio": 4,
+  "idSillin": 5,
+  "esPredefinida": true,
+  "modelo": "MTB Demo 29"
+}
+```
 
-Auth Service
-:8081
+## 🛒 Ejemplo de JSON para registrar una venta
+```json
+{
+  "idCliente": 1,
+  "productos": [
+    { "idBicicleta": 10, "cantidad": 1 }
+  ],
+  "total": 1850000
+}
+```
 
-Catalogo Service
-:8082
+---
 
-Inventario Service
-:8084
+## 📈 Estado actual
+- El login y la obtención de token funcionan.
+- El poblamiento y la compra requieren ajuste de DTOs y/o endpoints.
+- El frontend debe adaptarse para trabajar con los datos y flujos reales del backend.
 
-Sucursal Service
-:8083
+---
 
-Venta Service
-:8085
-
-MySQL Database
-
-Flujo de Proceso de Venta
-Database
-Inventario Service
-Catalogo Service
-Venta Service
-Frontend
-Database
-Inventario Service
-Catalogo Service
-Venta Service
-Frontend
-POST /api/v1/ventas
-GET precio producto
-Precio unitario
-POST movimiento inventario
-Confirmación
-Guardar venta + factura
-Venta guardada
-Venta completada
-Stack Tecnológico
-Documentation & Testing
-
-Swagger/OpenAPI
-
-JUnit Tests
-
-Mockito
-
-Database Stack
-
-MySQL
-
-XAMPP
-
-Spring Data JPA
-
-Backend Stack
-
-Java 17
-
-Spring Boot 3.5+
-
-Maven
-
-JWT Security
-
-BCrypt
-
-Frontend Stack
-
-HTML5
-
-CSS3
-
-JavaScript ES6+
-
-Bootstrap 5.3.3
-
-FontAwesome 6.5.0
-
-⚙️ Configuración y Despliegue
-Requisitos previos
-Java 17 o superior
-MySQL 8.0+
-Maven 3.6+
-XAMPP (recomendado para desarrollo)
-Instalación
-# Clonar repositorio  [header-2](#header-2)
-git clone https://github.com/HecAguilaV/MasterBikes.git  
-cd MasterBikes  
-  
-# Configurar base de datos  [header-3](#header-3)
-# Iniciar XAMPP y crear base de datos 'masterbikes'  [header-4](#header-4)
-  
-# Compilar y ejecutar cada microservicio  [header-5](#header-5)
-cd auth-service  
-mvn clean install  
-mvn spring-boot:run  
-  
-# Repetir para cada servicio en puertos específicos  [header-6](#header-6)
-Puertos de Servicios
-Servicio de autenticación : 8081
-Servicio de Catálogo : 8082
-Servicio Sucursal : 8083
-Servicio de Inventario : 8084
-Venta Servicio : 8085
-Frontend : Servidor web estático
-Documentación API
-Servicio de autenticación:http://localhost:8081/swagger-ui.html
-Otros servicios:http://localhost:{puerto}/swagger-ui.html
-🤝 Desarrollo y Colaboración
-Convenciones de Código
-Clases Java : CamelCase(ej UsuarioController:)
-Paquetes :minusculas.separadas.por.puntos
-Variables y métodos :camelCase
-Compromisos : En español, presente, descriptivos
-Flujo de trabajo
-# Crear rama feature  [header-7](#header-7)
-git checkout -b feature/nueva-funcionalidad  
-  
-# Realizar cambios y commits  [header-8](#header-8)
-git add .  
-git commit -m "feat: agrega nueva funcionalidad"  
-  
-# Push y crear PR  [header-9](#header-9)
-git push origin feature/nueva-funcionalidad
-📝 Servicios de Negocio
-Arriendo de bicicletas
-Planes diarios, semanales y mensuales
-Gestión de disponibilidad por sucursal
-Sistema de reservas
-Venta de productos
-Catálogo de bicicletas y accesorios
-Gestión de inventario en tiempo real
-Facturación automática
-Servicio Técnico
-Taller certificado Shimano
-Mantenimiento preventivo
-Reparaciones especializadas
-🔒 Seguridad
-Autenticación
-Tokens JWT para sesiones
-Roles: ADMIN, SUPERVISOR, TECNICO, VENDEDOR, CLIENTE
-Encriptación BCrypt para contraseñas
-Autorización
-Puntos finales protegidos por rol
-Validación de permisos en cada servicio
-CORS configurado para la interfaz
-📈 Próximas mejoras
-Descubrimiento de servicios de implementación (Eureka)
-Agregar disyuntores (Hystrix/Resilience4j)
-Configurar el registro distribuido (ELK Stack)
-Monitoreo de implementaciones (Micrometer + Prometheus)
-Agregar pruebas de integración completas
-Servicios Dockerizar
-Implementar canalización de CI/CD
-© 2024 MasterBikes. Todos los derechos reservados.
+© 2025 MasterBikes. Todos los derechos reservados.
