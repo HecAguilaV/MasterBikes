@@ -19,6 +19,8 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+
+
     public Optional<Usuario> obtenerUsuario(Long id) {
         return usuarioRepository.findById(id);
     }
@@ -56,5 +58,14 @@ public class UsuarioService {
 
     public boolean existeEmail(String email) {
         return usuarioRepository.existsByEmail(email);
+    }
+
+    // Cambiar el rol de un usuario
+    public Optional<Usuario> cambiarRol(Long id, masterbikes.model.enums.Rol nuevoRol) {
+        return usuarioRepository.findById(id)
+                .map(usuario -> {
+                    usuario.setRol(nuevoRol);
+                    return usuarioRepository.save(usuario);
+                });
     }
 }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administración de Usuarios - MasterBikes</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 2em; }
+        .admin-table th, .admin-table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        .admin-table th { background: #f0f0f0; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Administración de Usuarios</h1>
+    <div id="mensaje"></div>
+    <table class="admin-table" id="usuariosTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="/js/admin.js"></script>
+</body>
+</html>
