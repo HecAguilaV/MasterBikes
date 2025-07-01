@@ -13,10 +13,9 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080", "http://localhost:63342") // Agrega aquí todos los orígenes de tu frontend
+                        .allowedOrigins("http://localhost:63342") // Solo el origen de tu frontend activo
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .allowedHeaders("*"); // Sin allowCredentials para evitar conflicto de CORS
             }
         };
     }
