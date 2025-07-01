@@ -1,0 +1,79 @@
+[
+  {
+    "idCliente": null,
+    "tallaUsuario": "M",
+    "idMarco": 1,
+    "idRueda": 4,
+    "idFreno": 10,
+    "idManubrio": 13,
+    "idSillin": 15,
+    "esPredefinida": true,
+    "modelo": "Bicicleta Orion Futurista"
+  },
+  {
+    "idCliente": null,
+    "tallaUsuario": "S",
+    "idMarco": 2,
+    "idRueda": 5,
+    "idFreno": 11,
+    "idManubrio": 14,
+    "idSillin": 16,
+    "esPredefinida": true,
+    "modelo": "Bicicleta Luna 20"
+  },
+  {
+    "idCliente": null,
+    "tallaUsuario": "M",
+    "idMarco": 3,
+    "idRueda": 6,
+    "idFreno": 12,
+    "idManubrio": 13,
+    "idSillin": 15,
+    "esPredefinida": true,
+    "modelo": "Bicicleta BOB Cat Trail 5"
+  },
+  {
+    "idCliente": null,
+    "tallaUsuario": "L",
+    "idMarco": 1,
+    "idRueda": 5,
+    "idFreno": 10,
+    "idManubrio": 14,
+    "idSillin": 16,
+    "esPredefinida": true,
+    "modelo": "Bicicleta Polux 7 Trail"
+  },
+  {
+    "idCliente": null,
+    "tallaUsuario": "M",
+    "idMarco": 2,
+    "idRueda": 4,
+    "idFreno": 11,
+    "idManubrio": 13,
+    "idSillin": 15,
+    "esPredefinida": true,
+    "modelo": "Bicicleta Aura 6"
+  },
+  {
+    "idCliente": null,
+    "tallaUsuario": "M",
+    "idMarco": 3,
+    "idRueda": 6,
+    "idFreno": 12,
+    "idManubrio": 14,
+    "idSillin": 16,
+    "esPredefinida": true,
+    "modelo": "Bicicleta Halley MTB"
+  },
+  {
+    "idCliente": null,
+    "tallaUsuario": "M",
+    "idMarco": 1,
+    "idRueda": 4,
+    "idFreno": 10,
+    "idManubrio": 13,
+    "idSillin": 15,
+    "esPredefinida": true,
+    "modelo": "Rift Zone Carbon 1"
+  }
+]

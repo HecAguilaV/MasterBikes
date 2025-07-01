@@ -1,0 +1,16 @@
+[
+  {
+    "nombre": "CASA_MATRIZ",
+    "direccion": "Centro 123",
+    "comuna": "Santiago",
+    "telefono": "22222222",
+    "email": "matriz@masterbikes.cl"
+  },
+  {
+    "nombre": "SUCURSAL_1",
+    "direccion": "Av. Providencia 456",
+    "comuna": "Providencia",
+    "telefono": "23333333",
+    "email": "sucursal1@masterbikes.cl"
+  }
+]

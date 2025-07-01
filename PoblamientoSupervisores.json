@@ -1,0 +1,22 @@
+[
+  {
+    "nombre": "Supervisor Matriz",
+    "email": "supervisor.matriz@masterbikes.cl",
+    "password": "supervisor123",
+    "telefono": "911111111",
+    "direccion": "Centro 123",
+    "fechaNacimiento": "1980-02-10",
+    "rol": "SUPERVISOR",
+    "sucursal": "CASA_MATRIZ"
+  },
+  {
+    "nombre": "Supervisor Sucursal 1",
+    "email": "supervisor.sucursal1@masterbikes.cl",
+    "password": "supervisor123",
+    "telefono": "922222222",
+    "direccion": "Av. Providencia 456",
+    "fechaNacimiento": "1982-03-20",
+    "rol": "SUPERVISOR",
+    "sucursal": "SUCURSAL_1"
+  }
+]

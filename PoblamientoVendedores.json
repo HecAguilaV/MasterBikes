@@ -1,0 +1,42 @@
+[
+  {
+    "nombre": "Vendedor 1 Matriz",
+    "email": "vendedor1.matriz@masterbikes.cl",
+    "password": "vendedor123",
+    "telefono": "955555555",
+    "direccion": "Centro 123",
+    "fechaNacimiento": "1992-09-10",
+    "rol": "VENDEDOR",
+    "sucursal": "CASA_MATRIZ"
+  },
+  {
+    "nombre": "Vendedor 2 Matriz",
+    "email": "vendedor2.matriz@masterbikes.cl",
+    "password": "vendedor123",
+    "telefono": "966666666",
+    "direccion": "Centro 123",
+    "fechaNacimiento": "1993-10-20",
+    "rol": "VENDEDOR",
+    "sucursal": "CASA_MATRIZ"
+  },
+  {
+    "nombre": "Vendedor 1 Sucursal 1",
+    "email": "vendedor1.sucursal1@masterbikes.cl",
+    "password": "vendedor123",
+    "telefono": "977777777",
+    "direccion": "Av. Providencia 456",
+    "fechaNacimiento": "1994-11-30",
+    "rol": "VENDEDOR",
+    "sucursal": "SUCURSAL_1"
+  },
+  {
+    "nombre": "Vendedor 2 Sucursal 1",
+    "email": "vendedor2.sucursal1@masterbikes.cl",
+    "password": "vendedor123",
+    "telefono": "988888888",
+    "direccion": "Av. Providencia 456",
+    "fechaNacimiento": "1995-12-05",
+    "rol": "VENDEDOR",
+    "sucursal": "SUCURSAL_1"
+  }
+]

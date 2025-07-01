@@ -15,26 +15,26 @@ let basePrice = 0;
 let totalPrice = 0;
 let addToCartButton = null;
 
-// Base de datos simulada de componentes
-const componentesDB = [
-    { id: 1, tipo: "Cuadro", marca: "Trek", modelo: "Alpha Gold", precio: 150000 },
-    { id: 2, tipo: "Cuadro", marca: "Specialized", modelo: "Allez", precio: 180000 },
-    { id: 3, tipo: "Cuadro", marca: "Giant", modelo: "ALUXX", precio: 120000 },
-    { id: 4, tipo: "Ruedas", marca: "Mavic", modelo: "Crossmax", precio: 90000 },
-    { id: 5, tipo: "Ruedas", marca: "DT Swiss", modelo: "X1900", precio: 120000 },
-    { id: 6, tipo: "Ruedas", marca: "Shimano", modelo: "MT500", precio: 75000 },
-    { id: 7, tipo: "Transmisión", marca: "Shimano", modelo: "Deore", precio: 85000 },
-    { id: 8, tipo: "Transmisión", marca: "SRAM", modelo: "NX Eagle", precio: 110000 },
-    { id: 9, tipo: "Transmisión", marca: "Shimano", modelo: "XT", precio: 130000 },
-    { id: 10, tipo: "Frenos", marca: "Shimano", modelo: "MT200", precio: 45000 },
-    { id: 11, tipo: "Frenos", marca: "SRAM", modelo: "Level T", precio: 65000 },
-    { id: 12, tipo: "Frenos", marca: "Magura", modelo: "MT5", precio: 95000 }
-];
+// Cargar componentes dinámicamente desde el backend
+let componentesDB = [];
+async function fetchComponentes() {
+    try {
+        const res = await fetch('/api/v1/catalogo/componentes');
+        if (res.ok) {
+            componentesDB = await res.json();
+        } else {
+            componentesDB = [];
+        }
+    } catch (e) {
+        componentesDB = [];
+    }
+}
 
-// Inicializar la página cuando el DOM esté cargado
-document.addEventListener('DOMContentLoaded', function() {
+
+// Llamar a la función al cargar la página y luego inicializar todo
+document.addEventListener('DOMContentLoaded', async function() {
+    await fetchComponentes();
     initializePage();
-    
     // Configurar el botón de proceder al pago
     const checkoutBtn = document.getElementById('checkout-btn');
     if (checkoutBtn) {
@@ -200,10 +200,25 @@ function displaySelectedBikeInfo() {
 }
 
 // Inicializar selectores de componentes
+// Llenar los selects de componentes dinámicamente desde la base de datos
 function initializeComponentSelects() {
     const selects = document.querySelectorAll('.builder-select');
-    
     selects.forEach(select => {
+        // Limpiar opciones previas
+        select.innerHTML = '';
+        const part = select.getAttribute('data-part');
+        // Opción por defecto
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = `Selecciona un ${part}`;
+        select.appendChild(defaultOption);
+        // Agregar opciones desde componentesDB
+        componentesDB.filter(c => c.tipo.toLowerCase() === part.toLowerCase()).forEach(component => {
+            const option = document.createElement('option');
+            option.value = `${part}-${component.id}`;
+            option.textContent = `${component.marca} ${component.modelo} ($${component.precio})`;
+            select.appendChild(option);
+        });
         select.addEventListener('change', handleComponentSelection);
     });
 }

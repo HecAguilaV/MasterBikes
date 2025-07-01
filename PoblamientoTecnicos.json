@@ -1,0 +1,22 @@
+[
+  {
+    "nombre": "Técnico 1",
+    "email": "tecnico1@masterbikes.cl",
+    "password": "tecnico123",
+    "telefono": "933333333",
+    "direccion": "Centro 123",
+    "fechaNacimiento": "1995-07-10",
+    "rol": "TECNICO",
+    "sucursal": "CASA_MATRIZ"
+  },
+  {
+    "nombre": "Técnico 2",
+    "email": "tecnico2@masterbikes.cl",
+    "password": "tecnico123",
+    "telefono": "944444444",
+    "direccion": "Centro 123",
+    "fechaNacimiento": "1996-08-15",
+    "rol": "TECNICO",
+    "sucursal": "CASA_MATRIZ"
+  }
+]
