@@ -1,83 +1,71 @@
 [
   {
-    "id": 1,
     "tipo": "Cuadro",
     "marca": "Trek",
     "modelo": "Alpha Gold",
     "precioUnitario": 150000
   },
   {
-    "id": 2,
     "tipo": "Cuadro",
     "marca": "Specialized",
     "modelo": "Allez",
     "precioUnitario": 180000
   },
   {
-    "id": 3,
     "tipo": "Cuadro",
     "marca": "Giant",
     "modelo": "ALUXX",
     "precioUnitario": 120000
   },
   {
-    "id": 4,
     "tipo": "Ruedas",
     "marca": "Mavic",
     "modelo": "Crossmax",
     "precioUnitario": 90000
   },
   {
-    "id": 5,
     "tipo": "Ruedas",
     "marca": "DT Swiss",
     "modelo": "X1900",
     "precioUnitario": 120000
   },
   {
-    "id": 6,
     "tipo": "Ruedas",
     "marca": "Shimano",
     "modelo": "MT500",
     "precioUnitario": 75000
   },
   {
-    "id": 7,
     "tipo": "Transmisión",
     "marca": "Shimano",
     "modelo": "Deore",
     "precioUnitario": 85000
   },
   {
-    "id": 8,
     "tipo": "Transmisión",
     "marca": "SRAM",
     "modelo": "NX Eagle",
     "precioUnitario": 110000
   },
   {
-    "id": 9,
     "tipo": "Transmisión",
     "marca": "Shimano",
     "modelo": "XT",
     "precioUnitario": 130000
   },
   {
-    "id": 10,
     "tipo": "Frenos",
     "marca": "Shimano",
     "modelo": "MT200",
     "precioUnitario": 45000
   },
   {
-    "id": 11,
     "tipo": "Frenos",
     "marca": "SRAM",
     "modelo": "Level T",
     "precioUnitario": 65000
   },
   {
-    "id": 12,
     "tipo": "Frenos",
     "marca": "Magura",
     "modelo": "MT5",

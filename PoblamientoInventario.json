@@ -1,0 +1,26 @@
+[
+  {
+    "productoId": 1,
+    "tipoProducto": "bicicleta",
+    "sucursalId": 1,
+    "cantidad": 5
+  },
+  {
+    "productoId": 2,
+    "tipoProducto": "bicicleta",
+    "sucursalId": 1,
+    "cantidad": 3
+  },
+  {
+    "productoId": 1,
+    "tipoProducto": "componente",
+    "sucursalId": 1,
+    "cantidad": 20
+  },
+  {
+    "productoId": 2,
+    "tipoProducto": "componente",
+    "sucursalId": 2,
+    "cantidad": 15
+  }
+]
