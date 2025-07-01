@@ -56,10 +56,42 @@ Microservicio de autenticación y gestión de usuarios para MasterBikes.
    ```
 3. Prueba los endpoints desde Swagger, Postman o el frontend.
 
-## Notas
-- El registro desde frontend crea usuarios con rol CLIENTE.
-- Para crear usuarios ADMIN, usa Swagger o inserta manualmente en la base de datos.
-- El MVP1 se centra en la autenticación y comunicación con el microservicio de ventas.
+## Poblamiento de usuarios
+
+### JSON para Postman
+```json
+[
+  {
+    "nombre": "Admin",
+    "email": "admin@masterbikes.com",
+    "password": "admin123",
+    "telefono": "111111111",
+    "direccion": "Casa Matriz",
+    "fechaNacimiento": "1980-01-01"
+  },
+  {
+    "nombre": "Vendedor",
+    "email": "vendedor@masterbikes.com",
+    "password": "vendedor123",
+    "telefono": "222222222",
+    "direccion": "Sucursal 1",
+    "fechaNacimiento": "1992-05-10"
+  }
+]
+```
+
+### SQL directo (ejemplo para MySQL/MariaDB)
+> **Nota:** La contraseña debe estar encriptada con BCrypt. Puedes usar un generador online para obtener el hash.
+```sql
+INSERT INTO usuario (nombre, email, password, rol, activo, sucursal) VALUES
+('Admin', 'admin@masterbikes.com', '$2a$10$HASHADMIN', 'ADMIN', true, 'CASA_MATRIZ'),
+('Vendedor', 'vendedor@masterbikes.com', '$2a$10$HASHVENDEDOR', 'VENDEDOR', true, 'SUCURSAL_1');
+```
+
+## Pruebas rápidas en Postman
+1. Registra un usuario con el endpoint de registro.
+2. Haz login y copia el token.
+3. Usa el token para listar usuarios o cambiar roles.
 
 ---
 

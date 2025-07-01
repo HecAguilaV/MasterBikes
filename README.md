@@ -8,34 +8,43 @@ MasterBikes es una plataforma de e-commerce para bicicletas, accesorios y servic
 
 ## 🏗️ Arquitectura General
 
-```mermaid
-flowchart LR
-    subgraph Frontend
-        A[Web (localhost:63342)]
-    end
-    subgraph Gateway
-        G[API Gateway (localhost:9000)\nCORS centralizado]
-    end
-    subgraph Backend
-        B1[Auth Service :8081]
-        B2[Catálogo :8082]
-        B3[Venta :8085]
-        B4[Inventario :8084]
-        B5[Sucursal :8083]
-        DB[(MariaDB/XAMPP)]
-    end
-    A-->|CORS|G
-    G-->|Proxy|B1
-    G-->|Proxy|B2
-    G-->|Proxy|B3
-    G-->|Proxy|B4
-    G-->|Proxy|B5
-    B1-->|JPA|DB
-    B2-->|JPA|DB
-    B3-->|JPA|DB
-    B4-->|JPA|DB
-    B5-->|JPA|DB
-```
+| Componente         | Puerto   | Descripción                        |
+|--------------------|----------|------------------------------------|
+| Frontend           | 8080     | Interfaz web (HTML/JS/CSS)         |
+| API Gateway        | 9000     | Centraliza rutas y CORS            |
+| Auth Service       | 8081     | Usuarios y autenticación           |
+| Catálogo Service   | 8082     | Bicicletas y componentes           |
+| Venta Service      | 8085     | Registro de ventas y boletas       |
+| Inventario Service | 8084     | Stock por sucursal                 |
+| Sucursal Service   | 8083     | Gestión de sucursales              |
+| Base de datos      | 3306     | MariaDB/MySQL (XAMPP)              |
+
+
+### 🖼️ Diagrama de Arquitectura
+
+<p align="center">
+  <img src="./DiagramaArquitectura.png" alt="Diagrama de Arquitectura MasterBikes" width="700"/>
+</p>
+
+<details>
+<summary><strong>🗒️ Leyenda y explicación</strong> (clic para expandir)</summary>
+
+**Leyenda:**
+
+- <span style="color:#388e3c;">Flechas verdes</span>:
+  - <strong>CORS/HTTP</strong>: Comunicación entre el frontend y el API Gateway.
+  - <strong>Proxy</strong>: El API Gateway enruta/redirecciona las peticiones a los microservicios.
+  - <strong>JPA</strong>: Acceso a la base de datos usando Java Persistence API (Spring Data JPA).
+- <strong>Colores de los rectángulos</strong>:
+  - Azul: Servicios y gateway (backend y frontend)
+  - Amarillo: Base de datos
+
+**Explicación:**
+
+El diagrama muestra la arquitectura de MasterBikes basada en microservicios. El usuario interactúa con el <strong>Frontend</strong>, que se comunica vía HTTP con el <strong>API Gateway</strong>. El gateway centraliza la gestión de rutas y CORS, y actúa como proxy hacia los microservicios: autenticación, catálogo, ventas, inventario y sucursales. Todos los servicios acceden a la base de datos relacional (MariaDB/MySQL) usando JPA. Este diseño permite escalabilidad, seguridad y separación clara de responsabilidades.
+
+</details>
+
 
 ---
 

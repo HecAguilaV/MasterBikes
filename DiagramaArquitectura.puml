@@ -1,0 +1,43 @@
+@startuml
+skinparam rectangle {
+    BackgroundColor #e3f2fd
+    BorderColor #1976d2
+    FontColor #0d47a1
+}
+skinparam database {
+    BackgroundColor #fffde7
+    BorderColor #fbc02d
+    FontColor #f57c00
+}
+skinparam ArrowColor #388e3c
+skinparam ArrowFontColor #388e3c
+
+rectangle "Frontend\n(Web:8080)" as Frontend
+rectangle "API Gateway\n(9000)\nCORS centralizado" as Gateway
+rectangle "Auth Service\n(8081)" as Auth
+rectangle "Catálogo Service\n(8082)" as Catalogo
+rectangle "Venta Service\n(8085)" as Venta
+rectangle "Inventario Service\n(8084)" as Inventario
+rectangle "Sucursal Service\n(8083)" as Sucursal
+database "MySQL/XAMPP\n(3306)" as DB
+
+Frontend -right-> Gateway : CORS/HTTP
+Gateway -down-> Auth : Proxy
+Gateway -down-> Catalogo : Proxy
+Gateway -down-> Venta : Proxy
+Gateway -down-> Inventario : Proxy
+Gateway -down-> Sucursal : Proxy
+
+Auth -right-> DB : JPA
+Catalogo -right-> DB : JPA
+Venta -right-> DB : JPA
+Inventario -right-> DB : JPA
+Sucursal -right-> DB : JPA
+
+' Leyenda
+legend right
+  CORS/HTTP: Comunicación entre frontend y gateway
+  Proxy: El API Gateway enruta/redirecciona las peticiones a los microservicios
+  JPA: Acceso a la base de datos usando Java Persistence API (Spring Data JPA)
+endlegend
+@enduml
