@@ -29,12 +29,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("mensaje", "Error de validación de datos.");
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-    }
+    // Eliminado para evitar ambigüedad con ResponseEntityExceptionHandler
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGeneralException(Exception ex) {
