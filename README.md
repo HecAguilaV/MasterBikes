@@ -5,36 +5,50 @@ MasterBikes es una plataforma de e-commerce para bicicletas, accesorios y servic
 
 ---
 
+
 ## 🏗️ Arquitectura General
 
 ```mermaid
-architecture-beta
-    group frontend(cloud)[Frontend Web]
-    group backend(cloud)[Backend Microservicios]
-    service auth(server)[Auth Service :8081] in backend
-    service catalog(server)[Catálogo :8082] in backend
-    service venta(server)[Venta :8085] in backend
-    service inventario(server)[Inventario :8084] in backend
-    service sucursal(server)[Sucursal :8083] in backend
-    service db(database)[MySQL] in backend
-
-    frontend:R --> L:auth
-    frontend:R --> L:catalog
-    frontend:R --> L:venta
-    catalog:B -- T:db
-    venta:B -- T:db
-    inventario:B -- T:db
-    sucursal:B -- T:db
+flowchart LR
+    subgraph Frontend
+        A[Web (localhost:63342)]
+    end
+    subgraph Gateway
+        G[API Gateway (localhost:9000)\nCORS centralizado]
+    end
+    subgraph Backend
+        B1[Auth Service :8081]
+        B2[Catálogo :8082]
+        B3[Venta :8085]
+        B4[Inventario :8084]
+        B5[Sucursal :8083]
+        DB[(MariaDB/XAMPP)]
+    end
+    A-->|CORS|G
+    G-->|Proxy|B1
+    G-->|Proxy|B2
+    G-->|Proxy|B3
+    G-->|Proxy|B4
+    G-->|Proxy|B5
+    B1-->|JPA|DB
+    B2-->|JPA|DB
+    B3-->|JPA|DB
+    B4-->|JPA|DB
+    B5-->|JPA|DB
 ```
 
 ---
 
+
 ## 🛠️ Stack Tecnológico
-- **Backend:** Java 17, Spring Boot 3.5+, Spring Data JPA, JWT, BCrypt, Maven, MySQL
+- **Backend:** Java 17, Spring Boot 3.5+, Spring Data JPA, JWT, BCrypt, Maven, MySQL/MariaDB
 - **Frontend:** HTML5, CSS3, JavaScript ES6+, Bootstrap 5, EmailJS
-- **Infraestructura:** XAMPP (dev), Postman (pruebas), Localhost
+- **Infraestructura:** XAMPP (dev, usa MariaDB), Postman (pruebas), Localhost
+
+> ⚠️ **Nota:** Si usas XAMPP, tu base es MariaDB aunque el driver de MySQL funcione. Puedes ignorar la advertencia de dialecto o cambiar a `MariaDBDialect` en `application.properties`.
 
 ---
+
 
 ## 🔗 Endpoints Principales
 
@@ -52,7 +66,9 @@ architecture-beta
 
 ---
 
-## � Problemas y Desafíos Actuales
+
+## 🐞 Problemas y Desafíos Actuales
+- **CORS:** Ahora solo el API Gateway maneja CORS. No debe haber configuración CORS en los microservicios.
 - **Desacople DTOs:** El backend espera BicicletaDTO (IDs de componentes), pero el frontend y scripts intentan poblar con productos simples (name, brand, etc.).
 - **Poblamiento:** No se puede poblar el catálogo con productos simples sin modificar el backend o conocer los IDs de componentes.
 - **Compra:** El frontend simula la compra (EmailJS) pero no realiza POST real a `/api/v1/ventas`.
@@ -62,14 +78,17 @@ architecture-beta
 
 ---
 
+
 ## 🚦 Recomendaciones para el MVP
 1. **Poblar catálogo:** Usar el formato BicicletaDTO o adaptar el backend para aceptar productos simples.
 2. **Login:** Usar `/auth/login` y guardar el token JWT.
 3. **Compra real:** Modificar el frontend para enviar el carrito como objeto Venta a `/api/v1/ventas` usando el token.
 4. **Verificación:** Usar Postman para poblar, loguear y comprar, asegurando que los endpoints funcionen de extremo a extremo.
 5. **Documentar DTOs:** Agregar ejemplos de JSON válidos para poblar y comprar en el README.
+6. **Reiniciar servicios:** Tras cada cambio en el backend, reinicia los microservicios y el API Gateway para aplicar la configuración.
 
 ---
+
 
 ## 📦 Ejemplo de JSON para poblar Bicicleta (BicicletaDTO)
 ```json
@@ -86,6 +105,7 @@ architecture-beta
 }
 ```
 
+
 ## 🛒 Ejemplo de JSON para registrar una venta
 ```json
 {
@@ -99,11 +119,12 @@ architecture-beta
 
 ---
 
+
 ## 📈 Estado actual
 - El login y la obtención de token funcionan.
 - El poblamiento y la compra requieren ajuste de DTOs y/o endpoints.
 - El frontend debe adaptarse para trabajar con los datos y flujos reales del backend.
+- CORS centralizado en el API Gateway, sin configuración CORS en microservicios.
 
----
 
 © 2025 MasterBikes. Todos los derechos reservados.
