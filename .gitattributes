@@ -1,1 +1,16 @@
-* text eol=lf
+* text=auto
+
+# Fuerza LF para archivos de código fuente
+*.java text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.xml text eol=lf
+*.sh text eol=lf
+*.properties text eol=lf
+
+# Mantén CRLF solo en archivos por defecto de Windows (opcional)
+*.bat text eol=crlf
+*.cmd text eol=crlf
