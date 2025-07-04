@@ -1,0 +1,11 @@
+# Ignora todas las carpetas target de todos los microservicios y módulos
+/target/
+**/target/
+*.class
+*.log
+*.iml
+/.idea/
+/.vscode/
+.DS_Store
+/node_modules/
+.env
