@@ -11,13 +11,21 @@ MasterBikes es una plataforma de e-commerce para bicicletas, accesorios y servic
 | Componente         | Puerto   | Descripción                        |
 |--------------------|----------|------------------------------------|
 | Frontend           | 8080     | Interfaz web (HTML/JS/CSS)         |
-| API Gateway        | 9000     | Centraliza rutas y CORS            |
+| API Gateway        | 8080     | Centraliza rutas y CORS            |
 | Auth Service       | 8081     | Usuarios y autenticación           |
 | Catálogo Service   | 8082     | Bicicletas y componentes           |
 | Venta Service      | 8085     | Registro de ventas y boletas       |
 | Inventario Service | 8084     | Stock por sucursal                 |
 | Sucursal Service   | 8083     | Gestión de sucursales              |
 | Base de datos      | 3306     | MariaDB/MySQL (XAMPP)              |
+
+| API Gateway        | 8080     | Centraliza rutas y CORS            |
+| Auth Service       | 8081     | Usuarios y autenticación           |
+| Catálogo Service   | 8082     | Bicicletas y componentes           |
+| Sucursal Service   | 8083     | Gestión de sucursales              |
+| Inventario Service | 8084     | Stock por sucursal                 |
+| Venta Service      | 8085     | Registro de ventas y boletas       |
+| Frontend           | 8090     | Interfaz web (HTML/JS/CSS)         |
 
 
 ### 🖼️ Diagrama de Arquitectura
@@ -137,3 +145,92 @@ El diagrama muestra la arquitectura de MasterBikes basada en microservicios. El 
 
 
 © 2025 MasterBikes. Todos los derechos reservados.
+
+
+## 🚢 Cómo levantar el entorno con Docker (para todo el equipo)
+
+1. **Instala Docker Desktop**
+   - Descarga e instala desde https://www.docker.com/products/docker-desktop/
+
+2. **Compila los microservicios**
+   - En cada carpeta de microservicio (por ejemplo, `api-gateway`, `auth-service`, etc.), ejecuta:
+     ```
+     mvn clean package
+     ```
+     Esto generará el archivo `.jar` en la carpeta `target`.
+
+3. **Levanta todo el sistema**
+   - Desde la raíz del proyecto (donde está `docker-compose.yml`), ejecuta:
+     ```
+     docker-compose up --build
+     ```
+   - Esto construirá las imágenes y levantará todos los servicios (backend, frontend y base de datos).
+
+4. **Accede a la app**
+   - API Gateway (backend): [http://localhost:8080](http://localhost:8080)
+   - Frontend (estático): [http://localhost:8090](http://localhost:8090)
+   - Cada microservicio expone su puerto (ver tabla de arquitectura).
+
+5. **Detener todo**
+   - Para detener los servicios, presiona `Ctrl+C` en la terminal o ejecuta:
+     ```
+     docker-compose down
+     ```
+
+> **¡Listo!** Así todos tendrán el mismo entorno, sin importar el sistema operativo o configuraciones locales.
+
+---
+
+## 🟢 Guía "con peras y manzanas" para levantar MasterBikes con Docker
+
+### 1. Instala Docker Desktop
+Descarga e instala Docker Desktop desde [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop). Solo tienes que hacerlo una vez.
+
+### 2. Compila los microservicios
+Abre una terminal (puede ser CMD, PowerShell o la terminal de VSCode) y navega a cada carpeta de microservicio (`api-gateway`, `auth-service`, etc.). En cada una ejecuta:
+
+```sh
+mvn clean package
+```
+
+Esto genera un archivo `.jar` en la carpeta `target` de cada microservicio. ¡Hazlo en todos!
+
+### 3. Levanta todo el sistema
+Vuelve a la raíz del proyecto (donde está el archivo `docker-compose.yml`). Ejecuta:
+
+```sh
+docker-compose up --build
+```
+
+Esto descargará lo necesario, construirá las imágenes y levantará todos los servicios automáticamente. La primera vez puede demorar varios minutos.
+
+### 4. Prueba la aplicación
+- Abre tu navegador y entra a:
+  - API Gateway (backend): [http://localhost:8080](http://localhost:8080)
+  - Frontend (estático): [http://localhost:8090](http://localhost:8090)
+- Los microservicios estarán disponibles en sus puertos (ver tabla de arquitectura).
+
+### 5. Detén todo
+En la terminal donde ejecutaste Docker, presiona `Ctrl+C` para detener los servicios. Si quieres limpiar todo, ejecuta:
+
+```sh
+docker-compose down
+```
+
+---
+
+### Preguntas frecuentes
+
+**¿Tengo que instalar Java, Maven o MySQL en mi PC?**
+> No, solo necesitas Docker Desktop. Todo lo demás lo hace Docker.
+
+**¿Qué hago si me da error de puertos ocupados?**
+> Asegúrate de que XAMPP, MySQL local u otros programas no estén usando los mismos puertos (3306, 8080, etc.).
+
+**¿Puedo programar y probar cambios?**
+> Sí. Haz cambios en el código, vuelve a compilar el microservicio con `mvn clean package` y reinicia Docker (`docker-compose up --build`).
+
+**¿Y si nunca he usado Docker?**
+> Solo sigue estos pasos. No necesitas saber nada más para levantar el sistema.
+
+---

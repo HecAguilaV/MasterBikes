@@ -1,6 +1,6 @@
 // admin-productos.js
 
-const API_BASE_URL = "http://localhost:9000";
+const API_BASE_URL = "http://localhost:8080";
 const token = localStorage.getItem('token');
 
 function mostrarAlerta(msg, tipo = 'success') {

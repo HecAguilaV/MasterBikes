@@ -1,0 +1,104 @@
+# Docker Compose para MasterBikes
+# Levanta todos los microservicios, frontend y base de datos en un solo comando
+
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:11.3
+    container_name: masterbikes-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: masterbikes
+      MYSQL_USER: masterbikes
+      MYSQL_PASSWORD: masterbikes
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/masterbikes
+      SPRING_DATASOURCE_USERNAME: masterbikes
+      SPRING_DATASOURCE_PASSWORD: masterbikes
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/masterbikes
+      SPRING_DATASOURCE_USERNAME: masterbikes
+      SPRING_DATASOURCE_PASSWORD: masterbikes
+
+  catalogo-service:
+    build: ./catalogo-service
+    container_name: catalogo-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/masterbikes
+      SPRING_DATASOURCE_USERNAME: masterbikes
+      SPRING_DATASOURCE_PASSWORD: masterbikes
+
+  venta-service:
+    build: ./venta-service
+    container_name: venta-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/masterbikes
+      SPRING_DATASOURCE_USERNAME: masterbikes
+      SPRING_DATASOURCE_PASSWORD: masterbikes
+
+  inventario-service:
+    build: ./inventario-service
+    container_name: inventario-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/masterbikes
+      SPRING_DATASOURCE_USERNAME: masterbikes
+      SPRING_DATASOURCE_PASSWORD: masterbikes
+
+  sucursal-service:
+    build: ./sucursal-service
+    container_name: sucursal-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/masterbikes
+      SPRING_DATASOURCE_USERNAME: masterbikes
+      SPRING_DATASOURCE_PASSWORD: masterbikes
+
+  frontend:
+    image: nginx:alpine
+    container_name: frontend
+    ports:
+      - "8090:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - api-gateway
+
+volumes:
+  db_data:

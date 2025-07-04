@@ -27,7 +27,7 @@ Interfaz web para clientes, vendedores, técnicos, supervisores y admins. Permit
 3. Si eres admin, accede a `/pages/admin.html` para gestionar usuarios.
 
 ## Notas
-- El frontend consume los endpoints del API Gateway (`http://localhost:9000`).
+- El frontend consume los endpoints del API Gateway (`http://localhost:8080`).
 - El menú y las páginas pueden adaptarse según el rol del usuario (ver scripts JS).
 - Las imágenes deben coincidir con las rutas usadas en la base de datos.
 

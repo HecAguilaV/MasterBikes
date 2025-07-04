@@ -1,7 +1,7 @@
 // frontend/js/api.js
 
 // Cambia esta URL base según la configuración real de tu API Gateway
-const API_BASE_URL = "http://localhost:9000"; // Puerto 9000 según application.yml
+const API_BASE_URL = "http://localhost:8080"; // Puerto 8080 según application.yml
 
 const API = {
     // Obtener productos del catálogo (pública)

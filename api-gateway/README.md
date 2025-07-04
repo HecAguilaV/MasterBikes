@@ -10,7 +10,7 @@ El API Gateway centraliza el acceso a todos los microservicios, maneja CORS, rut
 
 ## Configuración
 - El archivo principal de configuración es `src/main/resources/application.yml`.
-- El puerto por defecto es `9000`.
+- El puerto por defecto es `8080`.
 
 ## Ejemplo de rutas
 - `/auth/*` → auth-service
@@ -25,7 +25,7 @@ El API Gateway centraliza el acceso a todos los microservicios, maneja CORS, rut
 - Si cambias los puertos de los microservicios, actualiza el `application.yml`.
 
 ## Pruebas rápidas
-- Accede a cualquier endpoint a través de `http://localhost:9000/`.
+- Accede a cualquier endpoint a través de `http://localhost:8080/`.
 - Verifica que las respuestas y CORS funcionen correctamente.
 
 ---

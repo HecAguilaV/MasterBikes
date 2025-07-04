@@ -13,7 +13,7 @@ skinparam ArrowColor #388e3c
 skinparam ArrowFontColor #388e3c
 
 rectangle "Frontend\n(Web:8080)" as Frontend
-rectangle "API Gateway\n(9000)\nCORS centralizado" as Gateway
+rectangle "API Gateway\n(8080)\nCORS centralizado" as Gateway
 rectangle "Auth Service\n(8081)" as Auth
 rectangle "Catálogo Service\n(8082)" as Catalogo
 rectangle "Venta Service\n(8085)" as Venta
