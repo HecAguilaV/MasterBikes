@@ -1,5 +1,5 @@
 # Ignora todas las carpetas target de todos los microservicios y módulos
-/target/
+target/
 **/target/
 *.class
 *.log

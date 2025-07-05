@@ -234,3 +234,139 @@ docker-compose down
 > Solo sigue estos pasos. No necesitas saber nada más para levantar el sistema.
 
 ---
+
+## 🧪 Pruebas y documentación automática en MasterBikes
+
+### Tipos de pruebas integradas
+
+1. **Test unitario con Mockito (Java, Spring Boot)**
+   - Ubicación: `src/test/java/.../service/*ServiceTest.java` en cada microservicio.
+   - ¿Qué prueba?: La lógica de negocio de cada servicio, simulando dependencias (repositorios, etc.) sin requerir base de datos real.
+   - ¿Cómo ejecutar?:
+     ```sh
+     mvn test
+     # o
+     mvn clean package
+     ```
+   - **Ejemplo de resultado esperado:**
+     ```
+     [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+     [INFO] BUILD SUCCESS
+     ```
+   - **Ejemplo de código:**
+     ```java
+     @Test
+     void testFindAllReturnsList() {
+         when(repo.findAll()).thenReturn(Collections.singletonList(obj));
+         List<Obj> result = service.findAll();
+         assertEquals(1, result.size());
+     }
+     ```
+
+2. **Documentación automática Swagger/OpenAPI**
+   - Ubicación: `/swagger-ui.html` en cada microservicio (por ejemplo, Auth y Venta Service).
+   - ¿Qué muestra?: Todos los endpoints REST, sus parámetros, respuestas y permite probarlos desde el navegador.
+   - ¿Cómo acceder?:
+     1. Levanta el microservicio:
+        ```sh
+        mvn spring-boot:run
+        ```
+     2. Abre en el navegador:
+        - `http://localhost:8081/swagger-ui.html` (auth-service)
+        - `http://localhost:8085/swagger-ui.html` (venta-service)
+   - **Ejemplo visual:**
+     ![swagger-ui](docs/swagger-ui-ejemplo.png)
+
+3. **Endpoint con HATEOAS**
+   - Ubicación: `catalogo-service`, endpoint `/api/v1/catalogo/bicicletas/hateoas/{id}`
+   - ¿Qué muestra?: La respuesta JSON incluye links navegables (`_links`) para self, delete y all.
+   - ¿Cómo probar?:
+     1. Levanta el microservicio:
+        ```sh
+        mvn spring-boot:run
+        ```
+     2. Haz una petición con Postman o navegador:
+        `http://localhost:8082/api/v1/catalogo/bicicletas/hateoas/1`
+   - **Ejemplo de respuesta:**
+     ```json
+     {
+       "id": 1,
+       "modelo": "MTB Demo 29",
+       ...
+       "_links": {
+         "self": { "href": "http://localhost:8082/api/v1/catalogo/bicicletas/hateoas/1" },
+         "delete": { "href": "http://localhost:8082/api/v1/catalogo/bicicletas/1" },
+         "all": { "href": "http://localhost:8082/api/v1/catalogo/bicicletas" }
+       }
+     }
+     ```
+
+---
+
+### Ejemplos visuales para la presentación
+
+#### 1. Resultado de test unitario en consola
+
+![Test unitario exitoso](docs/test-unitario-ejemplo.png)
+
+- Muestra cómo se ve la consola cuando los tests pasan correctamente.
+
+#### 2. Swagger UI en el navegador
+
+![Swagger UI ejemplo](docs/swagger-ui-ejemplo.png)
+
+- Permite explorar y probar los endpoints de cada microservicio de forma visual.
+
+#### 3. Respuesta HATEOAS en Postman
+
+![HATEOAS en Postman](docs/hateoas-ejemplo.png)
+
+- Visualiza los links navegables en la respuesta JSON.
+
+#### 4. Ubicación de archivos de prueba
+
+```
+└── src/
+    └── test/
+        └── java/
+            └── .../service/
+                └── *ServiceTest.java
+```
+
+- Así puedes mostrar rápidamente dónde están los tests en el proyecto.
+
+---
+
+> Puedes agregar capturas de pantalla reales en la carpeta `docs/` para personalizar la presentación según tu entorno y resultados.
+
+---
+
+### Buenas prácticas y justificación
+
+- **Separación de responsabilidades:** Cada microservicio es responsable de sus propias pruebas y documentación.
+- **Calidad y mantenibilidad:** Las pruebas unitarias aseguran que la lógica de negocio funciona y es fácil de mantener.
+- **Swagger/OpenAPI:** Permite a cualquier desarrollador o evaluador entender y probar la API sin leer el código fuente.
+- **HATEOAS:** Mejora la navegabilidad y el cumplimiento de buenas prácticas REST.
+- **CI/CD Ready:** Todo el sistema puede ser probado automáticamente antes de desplegar.
+
+---
+
+### Resumen de comandos útiles
+
+- Ejecutar todos los tests de un microservicio:
+  ```sh
+  mvn test
+  ```
+- Levantar Swagger UI:
+  ```sh
+  mvn spring-boot:run
+  # luego abre http://localhost:[puerto]/swagger-ui.html
+  ```
+- Probar endpoint HATEOAS:
+  ```sh
+  curl http://localhost:8082/api/v1/catalogo/bicicletas/hateoas/1
+  ```
+
+---
+
+> Para más detalles, revisa los archivos de test en cada microservicio y la documentación Swagger generada automáticamente.
