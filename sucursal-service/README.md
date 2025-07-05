@@ -1,3 +1,7 @@
+<p align="right">
+  <img src="../logo.svg" alt="MasterBikes Logo" width="120"/>
+</p>
+
 # Sucursal Service - MasterBikes
 
 ## Descripción
@@ -40,10 +44,33 @@ INSERT INTO sucursal (nombre, direccion, telefono) VALUES
 - Las sucursales se deben poblar antes de poblar inventario o ventas.
 - Puedes poblar usando Postman o directamente en la base de datos.
 
-## Pruebas rápidas en Postman
-1. Consulta las sucursales disponibles.
-2. Crea una nueva sucursal.
+
+## 🚀 Pruebas en vivo con Swagger y HATEOAS
+
+Sigue estos pasos para demostrar el funcionamiento real del Sucursal Service en una presentación o defensa:
+
+### 1. Consultar sucursales
+- Abre [http://localhost:8083/swagger-ui.html](http://localhost:8083/swagger-ui.html)
+- Prueba el endpoint `GET /sucursal/sucursales`.
+
+### 2. Crear una sucursal
+- Usa `POST /sucursal/crear`.
+- Ejemplo de body:
+  ```json
+  {
+    "nombre": "CASA_MATRIZ",
+    "direccion": "Av. Principal 123, Santiago",
+    "telefono": "+56 2 2345 6789"
+  }
+  ```
+
+### 3. Pruebas automáticas
+- Ejecuta:
+  ```sh
+  mvn test
+  ```
+- Verifica que todos los tests pasen (`BUILD SUCCESS`).
 
 ---
 
-> Para más detalles de integración, revisa el README general.
+> Todos los endpoints y ejemplos pueden ser probados en vivo desde Swagger UI o Postman.

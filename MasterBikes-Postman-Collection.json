@@ -1,0 +1,82 @@
+{
+  "info": {
+    "_postman_id": "masterbikes-collection-2025-07-05",
+    "name": "MasterBikes - Pruebas API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Colección de pruebas para los microservicios de MasterBikes. Incluye login, catálogo, ventas y ejemplos de uso real."
+  },
+  "item": [
+    {
+      "name": "Login (Auth Service)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@masterbikes.com\",\n  \"password\": \"admin123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8081/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["auth", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Consultar catálogo (Catálogo Service)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8082/api/v1/catalogo/bicicletas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8082",
+          "path": ["api", "v1", "catalogo", "bicicletas"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Registrar venta (Venta Service)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idCliente\": 1,\n  \"productos\": [ { \"idBicicleta\": 1, \"cantidad\": 1 } ],\n  \"total\": 1850000,\n  \"sucursal\": \"CASA_MATRIZ\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8085/api/v1/ventas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8085",
+          "path": ["api", "v1", "ventas"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "HATEOAS venta (Venta Service)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/api/v1/ventas/1/hateoas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8085",
+          "path": ["api", "v1", "ventas", "1", "hateoas"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,3 +1,7 @@
+<p align="right">
+  <img src="../logo.svg" alt="MasterBikes Logo" width="120"/>
+</p>
+
 # Auth Service - MasterBikes
 
 Microservicio de autenticación y gestión de usuarios para MasterBikes.
@@ -47,13 +51,54 @@ Microservicio de autenticación y gestión de usuarios para MasterBikes.
 - MySQL (XAMPP recomendado)
 - Maven
 
-## Ejecución
-1. Configura la base de datos en `src/main/resources/application.properties`.
-2. Compila y ejecuta:
-   ```sh
-   mvn clean install
-   mvn spring-boot:run
-   ```
+
+## 🚀 Pruebas en vivo con Swagger y HATEOAS
+
+Sigue estos pasos para demostrar el funcionamiento real del Auth Service en una presentación o defensa:
+
+### 1. Login de usuario
+- Abre [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)
+- Busca el endpoint `POST /auth/login`.
+- Ejemplo de body:
+  ```json
+  {
+    "email": "admin@masterbikes.com",
+    "password": "admin123"
+  }
+  ```
+- Haz clic en "Try it out" y ejecuta. Copia el token JWT de la respuesta.
+
+### 2. Probar endpoints protegidos
+- Usa el token JWT en el botón "Authorize" de Swagger UI.
+- Prueba endpoints como `GET /api/usuarios` (requiere rol adecuado).
+
+### 3. Ejemplo de request/response
+- **Request:**
+  ```json
+  {
+    "email": "admin@masterbikes.com",
+    "password": "admin123"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "token": "<JWT>",
+    "rol": "ADMIN",
+    "mensaje": "Login exitoso."
+  }
+  ```
+
+### 4. Pruebas automáticas
+- Ejecuta:
+  ```sh
+  mvn test
+  ```
+- Verifica que todos los tests pasen (`BUILD SUCCESS`).
+
+---
+
+> Todos los endpoints y ejemplos pueden ser probados en vivo desde Swagger UI o Postman.
 3. Prueba los endpoints desde Swagger, Postman o el frontend.
 
 ## Poblamiento de usuarios

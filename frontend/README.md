@@ -1,3 +1,7 @@
+<p align="right">
+  <img src="../logo.svg" alt="MasterBikes Logo" width="120"/>
+</p>
+
 # Frontend - MasterBikes
 
 ## Descripción

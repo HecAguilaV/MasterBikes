@@ -52,7 +52,7 @@ class UsuarioServiceTest {
     @Test
     void testCrearUsuario() {
         Usuario usuario = Usuario.builder().email("nuevo@a.com").nombre("Nuevo").password("pass").rol(Rol.SUPERVISOR).sucursal("CASA_MATRIZ").build();
-        when(usuarioRepository.save(usuario)).thenReturn(usuario);
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
 
         Usuario creado = usuarioService.crearUsuario(usuario);
         assertEquals("Nuevo", creado.getNombre());
