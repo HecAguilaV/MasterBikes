@@ -13,10 +13,20 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**",
-                    "/api/usuarios/**", "/auth/**"
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
+                    "/swagger-resources/**",
+                    "/swagger-resources",
+                    "/configuration/ui",
+                    "/configuration/security",
+                    "/webjars/**",
+                    "/api-docs/**",
+                    "/api/usuarios/**",
+                    "/auth/**"
                 ).permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
             );
         return http.build();
     }
