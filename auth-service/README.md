@@ -63,7 +63,7 @@ Sigue estos pasos para demostrar el funcionamiento real del Auth Service en una 
   ```json
   {
     "email": "admin@masterbikes.com",
-    "password": "admin123"
+    "password": "12341234"
   }
   ```
 - Haz clic en "Try it out" y ejecuta. Copia el token JWT de la respuesta.
