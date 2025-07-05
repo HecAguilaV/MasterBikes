@@ -2,34 +2,34 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!-- =============================================================== -->
+	<!-- 1. SECCIÓN CLAVE: El Padre de Spring Boot -->
+	<!-- Esto gestionará todas las versiones de Spring Boot por ti. -->
+	<!-- =============================================================== -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.3</version>
+		<version>3.2.5</version> <!-- Usando una versión estable y probada de Spring Boot 3 -->
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>masterbikes</groupId>
 	<artifactId>venta-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>venta-service</name>
-	<description>Microservicio de Venta</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<description>Venta Service for MasterBikes</description>
+
 	<properties>
+		<!-- La versión de Java se hereda del parent, pero la puedes especificar si es necesario -->
 		<java.version>17</java.version>
+		<!-- Versión de SpringDoc compatible con Spring Boot 3.2.x -->
+		<spring-doc.version>2.5.0</spring-doc.version>
 	</properties>
+
 	<dependencies>
+		<!-- Dependencias de Spring Boot -->
+		<!-- Fíjate que ya NO necesitan la etiqueta <version> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -38,19 +38,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!-- HATEOAS -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
-
-	<!-- H2 Database -->
-	<dependency>
-	  <groupId>com.h2database</groupId>
-	  <artifactId>h2</artifactId>
-	  <scope>runtime</scope>
-	</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -58,60 +49,47 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Base de Datos -->
+		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Lombok -->
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.unboundid</groupId>
-			<artifactId>unboundid-ldapsdk</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- Swagger/OpenAPI (Springdoc) -->
+
+		<!-- =============================================================== -->
+		<!-- 2. SpringDoc (Swagger/OpenAPI) -->
+		<!-- Usamos una propiedad para la versión para mayor claridad -->
+		<!-- =============================================================== -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.5.0</version>
+			<version>${spring-doc.version}</version>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</path>
-					</annotationProcessorPaths>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
